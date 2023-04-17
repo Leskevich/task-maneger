@@ -1,13 +1,13 @@
 import React, {useCallback, useEffect} from 'react'
 import './App.css'
-import {TodolistsList} from '../features/TodolistsList/TodolistsList'
-import {ErrorSnackbar} from '../components/ErrorSnackbar/ErrorSnackbar'
+import {TodolistsList} from 'features/TodolistsList/TodolistsList'
+import {ErrorSnackbar} from 'components/ErrorSnackbar/ErrorSnackbar'
 import {useDispatch, useSelector} from 'react-redux'
 import {AppRootStateType} from './store'
 import {initializeAppTC, RequestStatusType} from './app-reducer'
 import {Navigate, Route, Routes} from 'react-router-dom'
 
-import {logoutTC} from '../features/Login/auth-reducer'
+import {logoutTC} from 'features/Login/auth-reducer'
 import {
     AppBar,
     Button,
@@ -19,7 +19,7 @@ import {
     Typography
 } from '@mui/material';
 import {Menu} from '@mui/icons-material'
-import {Login} from "../features/Login/Login";
+import {Login} from "features/Login/Login";
 
 
 type PropsType = {
@@ -64,7 +64,7 @@ function App({demo = false}: PropsType) {
             </AppBar>
             <Container fixed>
                 <Routes>
-                    <Route path={'/independentToDoList'} element={<TodolistsList demo={demo}/>}/>
+                    <Route path={'/'} element={<TodolistsList demo={demo}/>}/>
                     <Route path={'/login'} element={<Login/>}/>
                     <Route path={'/404'} element={<div>404</div>}/>
                     <Route path={'*'} element={<Navigate to={"/404"}/>}/>
