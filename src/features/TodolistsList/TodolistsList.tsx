@@ -3,7 +3,7 @@ import {useSelector} from 'react-redux'
 import {AppRootStateType} from 'app/store'
 import {
     addTodolistTC,
-    changeTodolistFilterAC,
+    changeTodolistFilter,
     changeTodolistTitleTC,
     fetchTodolistsTC,
     FilterValuesType,
@@ -57,8 +57,8 @@ export const TodolistsList: React.FC<PropsType> = ({demo = false}) => {
         dispatch(thunk)
     }, [])
 
-    const changeFilter = useCallback(function (value: FilterValuesType, todolistId: string) {
-        const action = changeTodolistFilterAC(todolistId, value)
+    const changeFilter = useCallback(function (filter: FilterValuesType, id: string) {
+        const action = changeTodolistFilter({id, filter})
         dispatch(action)
     }, [])
 
