@@ -5,13 +5,11 @@ import {
     addTodolistTC,
     changeTodolistFilter,
     changeTodolistTitleTC,
-    fetchTodolistsTC,
     FilterValuesType,
-    removeTodolistTC,
+    thunkTodo,
     TodolistDomainType
 } from './todolists-reducer'
-import {addTaskTC, removeTaskTC, TasksStateType, updateTaskTC} from './tasks-reducer'
-import {TaskStatuses} from 'api/todolists-api'
+import {TasksStateType} from './tasks-reducer'
 import {Grid, Paper} from '@mui/material'
 import {AddItemForm} from 'components/AddItemForm/AddItemForm'
 import {Todolist} from './Todolist/Todolist'
@@ -33,38 +31,13 @@ export const TodolistsList: React.FC<PropsType> = ({demo = false}) => {
         if (demo || !isLoggedIn) {
             return;
         }
-        const thunk = fetchTodolistsTC()
-        dispatch(thunk)
-    }, [])
-
-    const removeTask = useCallback(function (id: string, todolistId: string) {
-        const thunk = removeTaskTC(id, todolistId)
-        dispatch(thunk)
-    }, [])
-
-    const addTask = useCallback(function (title: string, todolistId: string) {
-        const thunk = addTaskTC(title, todolistId)
-        dispatch(thunk)
-    }, [])
-
-    const changeStatus = useCallback(function (id: string, status: TaskStatuses, todolistId: string) {
-        const thunk = updateTaskTC(id, {status}, todolistId)
-        dispatch(thunk)
-    }, [])
-
-    const changeTaskTitle = useCallback(function (id: string, newTitle: string, todolistId: string) {
-        const thunk = updateTaskTC(id, {title: newTitle}, todolistId)
+        const thunk = thunkTodo.fetchTodolists()
         dispatch(thunk)
     }, [])
 
     const changeFilter = useCallback(function (filter: FilterValuesType, id: string) {
         const action = changeTodolistFilter({id, filter})
         dispatch(action)
-    }, [])
-
-    const removeTodolist = useCallback(function (id: string) {
-        const thunk = removeTodolistTC(id)
-        dispatch(thunk)
     }, [])
 
     const changeTodolistTitle = useCallback(function (id: string, title: string) {
@@ -95,12 +68,7 @@ export const TodolistsList: React.FC<PropsType> = ({demo = false}) => {
                             <Todolist
                                 todolist={tl}
                                 tasks={allTodolistTasks}
-                                removeTask={removeTask}
                                 changeFilter={changeFilter}
-                                addTask={addTask}
-                                changeTaskStatus={changeStatus}
-                                removeTodolist={removeTodolist}
-                                changeTaskTitle={changeTaskTitle}
                                 changeTodolistTitle={changeTodolistTitle}
                                 demo={demo}
                             />

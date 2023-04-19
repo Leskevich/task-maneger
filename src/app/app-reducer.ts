@@ -31,7 +31,7 @@ const appSlice = createSlice({
     }
 })
 export const appReducer = appSlice.reducer
-export const {setAppInitialized, setAppStatus, setAppError} = appSlice.actions
+export const appActions = appSlice.actions
 
 export const initializeAppTC = () => (dispatch: Dispatch) => {
     authAPI.me().then(res => {
@@ -41,10 +41,9 @@ export const initializeAppTC = () => (dispatch: Dispatch) => {
 
         }
 
-        dispatch(setAppInitialized({isInitialized:true}));
+        dispatch(appActions.setAppInitialized({isInitialized:true}));
     })
 }
 
-export type SetAppErrorActionType = ReturnType<typeof setAppError>
-export type SetAppStatusActionType = ReturnType<typeof setAppStatus>
+
 
