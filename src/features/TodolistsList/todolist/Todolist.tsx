@@ -1,16 +1,17 @@
 import React, {useCallback, useEffect} from 'react'
 import {Task} from './Task/Task'
-import {TaskStatuses, TaskType} from 'api/todolists-api'
 import {FilterValuesType, thunkTodo, TodolistDomainType} from '../todolists-reducer'
 import {tasksThunks} from '../tasks-reducer'
 import {Button, IconButton} from '@mui/material'
 import {Delete} from '@mui/icons-material'
 import {useAppDispatch} from "common/hooks";
 import {AddItemForm, EditableSpan} from "common/components";
+import {TTask} from "features/TodolistsList/todolistsAPI";
+import { TaskStatuses } from 'common/commonType'
 
 type PropsType = {
     todolist: TodolistDomainType
-    tasks: Array<TaskType>
+    tasks: Array<TTask>
     changeFilter: (value: FilterValuesType, todolistId: string) => void
 
     changeTodolistTitle: (id: string, newTitle: string) => void

@@ -4,10 +4,9 @@ import {TodolistsList} from 'features/TodolistsList/TodolistsList'
 import {ErrorSnackbar} from 'common/components/ErrorSnackbar/ErrorSnackbar'
 import {useDispatch, useSelector} from 'react-redux'
 import {AppRootStateType} from './store'
-import {initializeAppTC, RequestStatusType} from './app-reducer'
+import {appThunk, RequestStatusType} from './app-reducer'
 import {Navigate, Route, Routes} from 'react-router-dom'
 
-import {logoutTC} from 'features/Login/auth-reducer'
 import {
     AppBar,
     Button,
@@ -20,6 +19,7 @@ import {
 } from '@mui/material';
 import {Menu} from '@mui/icons-material'
 import {Login} from "features/Login/Login";
+import {authThunk} from "features/Login/auth-reducer";
 
 
 type PropsType = {
@@ -33,11 +33,11 @@ function App({demo = false}: PropsType) {
     const dispatch = useDispatch<any>()
 
     useEffect(() => {
-        dispatch(initializeAppTC())
+        dispatch(appThunk.me())
     }, [])
 
     const logoutHandler = useCallback(() => {
-        dispatch(logoutTC())
+        dispatch(authThunk.logout())
     }, [])
 
     if (!isInitialized) {

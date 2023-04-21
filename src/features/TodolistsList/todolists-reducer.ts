@@ -1,11 +1,12 @@
-import {todolistsAPI, TodolistType, TUpdateTodo} from 'api/todolists-api'
 import {appActions, RequestStatusType} from 'app/app-reducer'
 import {createSlice, PayloadAction} from "@reduxjs/toolkit";
 import {createAppAsyncThunk} from "common/utils/create-app-async-thunk";
 import {handleNetworkError} from "common/utils";
+import {todolistsAPI, TTodolist, TUpdateTodo} from './todolistsAPI';
 
 
-const fetchTodolists = createAppAsyncThunk<TodolistType[]>('todolist/fetchTodolists', async (arg, thunkAPI) => {
+const fetchTodolists = createAppAsyncThunk<TTodolist[]>
+('todolist/fetchTodolists', async (arg, thunkAPI) => {
     const {dispatch, rejectWithValue} = thunkAPI
     try {
         dispatch(appActions.setAppStatus({status: "loading"}))
@@ -18,7 +19,8 @@ const fetchTodolists = createAppAsyncThunk<TodolistType[]>('todolist/fetchTodoli
     }
 })
 
-const removeTodo = createAppAsyncThunk<{ id: string }, { id: string }>('todolist/removeTodo', async (arg, thunkAPI) => {
+const removeTodo = createAppAsyncThunk<{ id: string }, { id: string }>
+('todolist/removeTodo', async (arg, thunkAPI) => {
     const {dispatch, rejectWithValue} = thunkAPI
     try {
         dispatch(appActions.setAppStatus({status: "loading"}))
@@ -32,7 +34,7 @@ const removeTodo = createAppAsyncThunk<{ id: string }, { id: string }>('todolist
     }
 })
 
-const addTodo = createAppAsyncThunk<{ todolist: TodolistType }, { title: string }>
+const addTodo = createAppAsyncThunk<{ todolist: TTodolist }, { title: string }>
 ('todolist/addTodo', async (arg, thunkAPI) => {
     const {dispatch, rejectWithValue} = thunkAPI
     try {
@@ -46,7 +48,8 @@ const addTodo = createAppAsyncThunk<{ todolist: TodolistType }, { title: string 
     }
 })
 
-const changeTitleTodo = createAppAsyncThunk<TUpdateTodo, TUpdateTodo>('todolist/changeTitleTodo', async (arg, thunkAPI) => {
+const changeTitleTodo = createAppAsyncThunk<TUpdateTodo, TUpdateTodo>
+('todolist/changeTitleTodo', async (arg, thunkAPI) => {
     const {dispatch, rejectWithValue} = thunkAPI
     try {
         dispatch(appActions.setAppStatus({status: "loading"}))
@@ -60,7 +63,7 @@ const changeTitleTodo = createAppAsyncThunk<TUpdateTodo, TUpdateTodo>('todolist/
 })
 
 export type FilterValuesType = 'all' | 'active' | 'completed';
-export type TodolistDomainType = TodolistType & {
+export type TodolistDomainType = TTodolist & {
     filter: FilterValuesType
     entityStatus: RequestStatusType
 }

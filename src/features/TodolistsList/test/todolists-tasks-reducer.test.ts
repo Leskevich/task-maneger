@@ -1,12 +1,13 @@
 import {thunkTodo, TodolistDomainType, todolistsReducer} from 'features/TodolistsList/todolists-reducer'
 import {tasksReducer, TasksStateType} from 'features/TodolistsList/tasks-reducer'
-import {TodolistType} from 'api/todolists-api'
+import { TTodolist } from '../todolistsAPI';
+
 
 test('ids should be equals', () => {
     const startTasksState: TasksStateType = {};
     const startTodolistsState: Array<TodolistDomainType> = [];
 
-    let todolist: TodolistType = {
+    let todolist: TTodolist = {
         title: 'new todolist',
         id: 'any id',
         addedDate: '',

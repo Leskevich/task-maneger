@@ -1,11 +1,13 @@
 import React from 'react'
-import { useFormik } from 'formik'
-import { useSelector } from 'react-redux'
-import { loginTC } from './auth-reducer'
-import { AppRootStateType } from 'app/store'
-import { Navigate } from 'react-router-dom'
-import { useAppDispatch } from 'common/hooks';
-import { Button, Checkbox, FormControl, FormControlLabel, FormGroup, FormLabel, Grid, TextField } from '@mui/material'
+import {FormikHelpers, useFormik} from 'formik'
+import {useSelector} from 'react-redux'
+import {AppRootStateType} from 'app/store'
+import {Navigate} from 'react-router-dom'
+import {useAppDispatch} from 'common/hooks';
+import {Button, Checkbox, FormControl, FormControlLabel, FormGroup, FormLabel, Grid, TextField} from '@mui/material'
+import {authThunk} from "features/Login/auth-reducer";
+import {LoginParamsType} from "features/Login/authApi";
+import {ResponseType} from "common/commonType";
 
 export const Login = () => {
     const dispatch = useAppDispatch()
@@ -31,13 +33,17 @@ export const Login = () => {
             password: '',
             rememberMe: false
         },
-        onSubmit: values => {
-            dispatch(loginTC(values));
+        onSubmit: (values, formikHelpers: FormikHelpers<LoginParamsType>) => {
+            dispatch(authThunk.login(values))
+                .unwrap()
+                .catch((res:ResponseType) => {
+                    res.fieldsErrors.forEach((e)=>formikHelpers.setFieldError(e.field,e.error))
+                })
         },
     })
 
     if (isLoggedIn) {
-        return <Navigate to={"/"} />
+        return <Navigate to={"/"}/>
     }
 
 

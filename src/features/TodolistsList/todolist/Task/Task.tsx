@@ -1,14 +1,15 @@
 import React, {ChangeEvent, useCallback} from 'react'
 import {Checkbox, IconButton} from '@mui/material'
 import {Delete} from '@mui/icons-material'
-import {TaskStatuses, TaskType} from 'api/todolists-api'
 import {tasksThunks} from "features/TodolistsList/tasks-reducer";
 import {useAppDispatch} from "common/hooks";
 import {EditableSpan} from "common/components";
+import {TTask} from "features/TodolistsList/todolistsAPI";
+import {TaskStatuses} from "common/commonType";
 
 
 type TaskPropsType = {
-    task: TaskType
+    task: TTask
     todolistId: string
 }
 export const Task = React.memo((props: TaskPropsType) => {

@@ -5,8 +5,8 @@ import {
     todolistsReducer
 } from 'features/TodolistsList/todolists-reducer'
 import {v1} from 'uuid'
-import {TodolistType} from 'api/todolists-api'
 import {RequestStatusType} from 'app/app-reducer'
+import { TTodolist } from '../todolistsAPI'
 
 let todolistId1: string
 let todolistId2: string
@@ -28,7 +28,7 @@ test('correct todolist should be removed', () => {
 })
 
 test('correct todolist should be added', () => {
-    let todolist: TodolistType = {
+    let todolist: TTodolist = {
         title: 'New todolist',
         id: 'any id',
         addedDate: '',
