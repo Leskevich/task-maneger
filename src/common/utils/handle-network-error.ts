@@ -5,6 +5,8 @@ import axios, {AxiosError} from "axios";
 
 export const handleNetworkError = (e: unknown, dispatch: Dispatch) => {
     const err = e as Error | AxiosError<{ error: string }>
+
+
     if (axios.isAxiosError(err)) {
         const error = err.message ? err.message : 'Some error occurred'
         dispatch(appActions.setAppError({error}))
