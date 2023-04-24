@@ -3,6 +3,7 @@ import {appActions, appThunk} from "app/app-reducer";
 import {createAppAsyncThunk, handleAppError, handleNetworkError} from "common/utils";
 import {authAPI, LoginParamsType} from './authApi';
 import {TResultCode} from "common/commonType";
+import {ThunkTryCatch} from "common/utils/thunk-try-catch";
 
 const login = createAppAsyncThunk<{ isLoggedIn: boolean }, LoginParamsType>('auth/login', async (arg, thunkAPI) => {
     const {dispatch, rejectWithValue} = thunkAPI
@@ -13,7 +14,8 @@ const login = createAppAsyncThunk<{ isLoggedIn: boolean }, LoginParamsType>('aut
             dispatch(appActions.setAppStatus({status: "succeeded"}))
             return {isLoggedIn: true}
         } else {
-            handleAppError(res.data, dispatch, false);
+            const isShowError = !res.data.fieldsErrors.length
+            handleAppError(res.data, dispatch, isShowError);
             return rejectWithValue(res.data)
         }
     } catch (e) {
@@ -22,9 +24,9 @@ const login = createAppAsyncThunk<{ isLoggedIn: boolean }, LoginParamsType>('aut
     }
 })
 
-const logout = createAppAsyncThunk<{ isLoggedIn: boolean }>('auth/logout', async (arg, thunkAPI) => {
+const logout = createAppAsyncThunk<{ isLoggedIn: boolean }>('auth/logout', (arg, thunkAPI) => {
     const {dispatch, rejectWithValue} = thunkAPI
-    try {
+    return ThunkTryCatch(thunkAPI, async () => {
         dispatch(appActions.setAppStatus({status: "loading"}))
         const res = await authAPI.logout()
         if (res.data.resultCode === TResultCode.OK) {
@@ -34,10 +36,7 @@ const logout = createAppAsyncThunk<{ isLoggedIn: boolean }>('auth/logout', async
             handleAppError(res.data, dispatch);
             return rejectWithValue(null)
         }
-    } catch (e) {
-        handleNetworkError(e, dispatch)
-        return rejectWithValue(null)
-    }
+    })
 })
 
 

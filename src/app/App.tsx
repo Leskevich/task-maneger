@@ -66,8 +66,7 @@ function App({demo = false}: PropsType) {
                 <Routes>
                     <Route path={'/'} element={<TodolistsList demo={demo}/>}/>
                     <Route path={'/login'} element={<Login/>}/>
-                    <Route path={'/404'} element={<div>404</div>}/>
-                    <Route path={'*'} element={<Navigate to={"/404"}/>}/>
+                    <Route path={'*'} element={<Navigate to={"/"}/>}/>
                 </Routes>
             </Container>
         </div>
