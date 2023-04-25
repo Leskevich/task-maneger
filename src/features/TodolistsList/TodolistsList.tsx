@@ -1,17 +1,12 @@
 import React, {useCallback, useEffect} from 'react'
 import {useSelector} from 'react-redux'
 import {AppRootStateType} from 'app/store'
-import {
-    changeTodolistFilter,
-    FilterValuesType,
-    thunkTodo,
-    TodolistDomainType
-} from './todolists-reducer'
+import {changeTodolistFilter, FilterValuesType, thunkTodo, TodolistDomainType} from './todolists-reducer'
 import {TasksStateType} from './tasks-reducer'
 import {Grid, Paper} from '@mui/material'
 import {Todolist} from './todolist/Todolist'
 import {Navigate} from 'react-router-dom'
-import {useAppDispatch} from "common/hooks";
+import {useActions} from "common/hooks";
 import {AddItemForm} from "common/components";
 
 
@@ -24,29 +19,26 @@ export const TodolistsList: React.FC<PropsType> = ({demo = false}) => {
     const tasks = useSelector<AppRootStateType, TasksStateType>(state => state.tasks)
     const isLoggedIn = useSelector<AppRootStateType, boolean>(state => state.auth.isLoggedIn)
 
-    const dispatch = useAppDispatch()
+    const {fetchTodolists, addTodo, changeTitleTodo} = useActions(thunkTodo)
 
     useEffect(() => {
         if (demo || !isLoggedIn) {
             return;
         }
-        const thunk = thunkTodo.fetchTodolists()
-        dispatch(thunk)
+        fetchTodolists()
     }, [])
 
     const changeFilter = useCallback(function (filter: FilterValuesType, id: string) {
-        const action = changeTodolistFilter({id, filter})
-        dispatch(action)
+        changeTodolistFilter({id, filter})
     }, [])
 
     const changeTodolistTitle = useCallback(function (todolistId: string, title: string) {
-        const thunk = thunkTodo.changeTitleTodo({todolistId, title})
-        dispatch(thunk)
+        changeTitleTodo({todolistId, title})
     }, [])
 
     const addTodolist = useCallback((title: string) => {
-        dispatch(thunkTodo.addTodo({title}))
-    }, [dispatch])
+        addTodo({title})
+    }, [])
 
     if (!isLoggedIn) {
         return <Navigate to={"/login"}/>
