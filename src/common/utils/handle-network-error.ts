@@ -2,11 +2,7 @@ import {appActions} from 'app/app-reducer'
 import {Dispatch} from 'redux'
 import axios, {AxiosError} from "axios";
 
-/**
- *
- * @param e
- * @param dispatch
- */
+
 export const handleNetworkError = (e: unknown, dispatch: Dispatch) => {
     const err = e as Error | AxiosError<{ error: string }>
     if (axios.isAxiosError(err)) {
