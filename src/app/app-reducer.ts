@@ -1,6 +1,6 @@
 import {createSlice, PayloadAction} from "@reduxjs/toolkit";
 import {authAPI} from "features/Login";
-import {createAppAsyncThunk, handleAppError, handleNetworkError} from "common/utils";
+import {createAppAsyncThunk, handleAppError, handleServerError} from "common/utils";
 import {TResultCode} from 'common/commonType';
 
 export type RequestStatusType = 'idle' | 'loading' | 'succeeded' | 'failed'
@@ -28,7 +28,7 @@ const me = createAppAsyncThunk<{ isLoggedIn: boolean }>('app/initializeApp', asy
             return rejectWithValue(null)
         }
     } catch (e) {
-        handleNetworkError(e, dispatch)
+        handleServerError(e, dispatch)
         return rejectWithValue(null)
     } finally {
         dispatch(appActions.setAppInitialized({isInitialized: true}));

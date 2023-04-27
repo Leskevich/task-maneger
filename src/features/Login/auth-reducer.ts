@@ -1,6 +1,6 @@
 import {createSlice} from "@reduxjs/toolkit";
 import {appActions, appThunk} from "app/app-reducer";
-import {createAppAsyncThunk, handleAppError, handleNetworkError} from "common/utils";
+import {createAppAsyncThunk, handleAppError, handleServerError} from "common/utils";
 import {authAPI, LoginParamsType} from './authApi';
 import {TResultCode} from "common/commonType";
 import {ThunkTryCatch} from "common/utils/thunk-try-catch";
@@ -19,7 +19,7 @@ const login = createAppAsyncThunk<{ isLoggedIn: boolean }, LoginParamsType>('aut
             return rejectWithValue(res.data)
         }
     } catch (e) {
-        handleNetworkError(e, dispatch)
+        handleServerError(e, dispatch)
         return rejectWithValue(null)
     }
 })

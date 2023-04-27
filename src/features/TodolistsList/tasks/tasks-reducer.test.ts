@@ -2,9 +2,9 @@ import {
     tasksThunks,
     tasksReducer,
     TasksStateType
-} from 'features/TodolistsList/tasks-reducer'
+} from 'features/TodolistsList/tasks/tasks-reducer'
 
-import {thunkTodo} from 'features/TodolistsList/todolists-reducer'
+import {thunkTodo} from 'features/TodolistsList/todolist/todolists-reducer'
 import {TaskPriorities, TaskStatuses} from "common/commonType";
 
 

@@ -3,14 +3,14 @@ import {FormikHelpers, useFormik} from 'formik'
 import {useSelector} from 'react-redux'
 import {AppRootStateType} from 'app/store'
 import {Navigate} from 'react-router-dom'
-import {useAppDispatch} from 'common/hooks';
+import {useActions} from 'common/hooks';
 import {Button, Checkbox, FormControl, FormControlLabel, FormGroup, FormLabel, Grid, TextField} from '@mui/material'
 import {authThunk} from "features/Login/auth-reducer";
 import {LoginParamsType} from "features/Login/authApi";
 import {ResponseType} from "common/commonType";
 
 export const Login = () => {
-    const dispatch = useAppDispatch()
+    const {login} = useActions(authThunk)
 
     const isLoggedIn = useSelector<AppRootStateType, boolean>(state => state.auth.isLoggedIn);
 
@@ -26,7 +26,6 @@ export const Login = () => {
                     password: 'Password is required'
                 }
             }
-
         },
         initialValues: {
             email: '',
@@ -34,7 +33,7 @@ export const Login = () => {
             rememberMe: false
         },
         onSubmit: (values, formikHelpers: FormikHelpers<LoginParamsType>) => {
-            dispatch(authThunk.login(values))
+            login(values)
                 .unwrap()
                 .catch((res:ResponseType) => {
                     res.fieldsErrors.forEach((e)=>formikHelpers.setFieldError(e.field,e.error))

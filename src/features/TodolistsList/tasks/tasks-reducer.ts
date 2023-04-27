@@ -1,18 +1,11 @@
-import {handleNetworkError} from 'common/utils/handle-network-error'
+import {handleServerError} from 'common/utils/handle-server-error'
 import {createSlice} from "@reduxjs/toolkit";
-import {thunkTodo} from "features/TodolistsList/todolists-reducer";
+import {thunkTodo} from "features/TodolistsList/todolist/todolists-reducer";
 import {appActions} from "app/app-reducer";
 import {createAppAsyncThunk} from "common/utils/create-app-async-thunk";
 import {handleAppError} from "common/utils/handle-app-error";
-import {
-    TTask,
-    TCreateTaskArgs,
-    TDeleteTasks,
-    todolistsAPI,
-    TUpdateTaskArgs,
-    TUpdateTaskModel
-} from './todolistsAPI';
 import {TaskPriorities, TaskStatuses} from "common/commonType";
+import {taskAPI, TCreateTaskArgs, TDeleteTasks, TTask, TUpdateTaskArgs, TUpdateTaskModel} from "features/TodolistsList/tasks/taskAPI";
 
 
 export type TasksStateType = {
@@ -26,12 +19,12 @@ const fetchTasks = createAppAsyncThunk<{ tasks: TTask[], todolistId: string }, s
     const {dispatch, rejectWithValue} = thunkAPI
     try {
         dispatch(appActions.setAppStatus({status: "loading"}))
-        const res = await todolistsAPI.getTasks(todolistId)
+        const res = await taskAPI.getTasks(todolistId)
         const tasks = res.data.items
         dispatch(appActions.setAppStatus({status: "succeeded"}))
         return {tasks, todolistId}
     } catch (e) {
-        handleNetworkError(e, dispatch)
+        handleServerError(e, dispatch)
         return rejectWithValue(null)
     }
 })
@@ -42,7 +35,7 @@ const addTask = createAppAsyncThunk<TTask, TCreateTaskArgs>(
         try {
 
             dispatch(appActions.setAppStatus({status: "loading"}))
-            const res = await todolistsAPI.createTask(args)
+            const res = await taskAPI.createTask(args)
             if (res.data.resultCode === 0) {
                 const task = res.data.data.item
                 dispatch(appActions.setAppStatus({status: "succeeded"}))
@@ -52,7 +45,7 @@ const addTask = createAppAsyncThunk<TTask, TCreateTaskArgs>(
                 return rejectWithValue(null)
             }
         } catch (e) {
-            handleNetworkError(e, dispatch)
+            handleServerError(e, dispatch)
             return rejectWithValue(null)
         }
     }
@@ -83,7 +76,7 @@ const updateTask = createAppAsyncThunk<TUpdateTaskArgs, {
             ...args.domainModel
         }
 
-        const res = await todolistsAPI.updateTask({todolistId: args.todolistId, taskId: args.taskId, model: apiModel})
+        const res = await taskAPI.updateTask({todolistId: args.todolistId, taskId: args.taskId, model: apiModel})
 
         if (res.data.resultCode === 0) {
             dispatch(appActions.setAppStatus({status: "succeeded"}))
@@ -94,7 +87,7 @@ const updateTask = createAppAsyncThunk<TUpdateTaskArgs, {
             return rejectWithValue(null)
         }
     } catch (e) {
-        handleNetworkError(e, dispatch)
+        handleServerError(e, dispatch)
         return rejectWithValue(null)
     }
 })
@@ -103,11 +96,11 @@ const removeTask = createAppAsyncThunk<TDeleteTasks, TDeleteTasks>('task/removeT
     const {dispatch, rejectWithValue} = thunkAPI
     try {
         dispatch(appActions.setAppStatus({status: "loading"}))
-        await todolistsAPI.deleteTask(arg)
+        await taskAPI.deleteTask(arg)
         dispatch(appActions.setAppStatus({status: "succeeded"}))
         return arg
     } catch (e) {
-        handleNetworkError(e, dispatch)
+        handleServerError(e, dispatch)
         return rejectWithValue(null)
     }
 })
@@ -132,7 +125,6 @@ const slice = createSlice({
         })
         builder.addCase(addTask.fulfilled, (state, action) => {
             state[action.payload.todoListId].unshift(action.payload)
-            console.log(state[action.payload.todoListId])
         })
         builder.addCase(updateTask.fulfilled, (state, action) => {
             const task = state[action.payload.todolistId]

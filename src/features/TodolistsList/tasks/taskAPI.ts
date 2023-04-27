@@ -1,22 +1,7 @@
-import {AxiosResponse} from "axios";
-import {instance,} from "common/instace";
+import {instance} from "common/instace";
 import {ResponseType, TaskPriorities, TaskStatuses} from "common/commonType";
 
-export const todolistsAPI = {
-    getTodolists() {
-        return instance.get<TTodolist[]>('todo-lists');
-    },
-    createTodolist(title: string) {
-        return instance.post<any, AxiosResponse<ResponseType<{ item: TTodolist }>>, {
-            title: string
-        }>('todo-lists', {title: title});
-    },
-    deleteTodolist(id: string) {
-        return instance.delete<ResponseType>(`todo-lists/${id}`);
-    },
-    updateTodolist(args: TUpdateTodo) {
-        return instance.put<ResponseType>(`todo-lists/${args.todolistId}`, {title: args.title});
-    },
+export const taskAPI = {
     getTasks(todolistId: string) {
         return instance.get<TGetTasksResponse>(`todo-lists/${todolistId}/tasks`);
     },
@@ -34,16 +19,14 @@ export const todolistsAPI = {
     }
 }
 
-export type TUpdateTodo = { todolistId: string, title: string }
+type TGetTasksResponse = {
+    error: string | null
+    totalCount: number
+    items: TTask[]
+}
 export type TDeleteTasks = { todolistId: string, taskId: string }
 export type TUpdateTaskArgs = { todolistId: string, taskId: string, model: TUpdateTaskModel }
 export type TCreateTaskArgs = { todolistId: string, taskTitle: string }
-export type TTodolist = {
-    id: string
-    title: string
-    addedDate: string
-    order: number
-}
 export type TTask = {
     description: string
     title: string
@@ -63,9 +46,4 @@ export type TUpdateTaskModel = {
     priority: TaskPriorities
     startDate: string
     deadline: string
-}
-type TGetTasksResponse = {
-    error: string | null
-    totalCount: number
-    items: TTask[]
 }
