@@ -2,18 +2,9 @@ import {createSlice, PayloadAction} from "@reduxjs/toolkit";
 import {authAPI} from "features/Login";
 import {createAppAsyncThunk, handleAppError, handleServerError} from "common/utils";
 import {TResultCode} from 'common/commonType';
+import {AnyAction} from "redux";
+import {RequestStatus} from "common/utils/consts";
 
-export type RequestStatusType = 'idle' | 'loading' | 'succeeded' | 'failed'
-export type InitialStateType = {
-    status: RequestStatusType
-    error: string | null
-    isInitialized: boolean
-}
-const initialState: InitialStateType = {
-    status: 'idle',
-    error: null,
-    isInitialized: false
-}
 
 const me = createAppAsyncThunk<{ isLoggedIn: boolean }>('app/initializeApp', async (arg, thunkAPI) => {
     const {dispatch, rejectWithValue} = thunkAPI
@@ -34,7 +25,13 @@ const me = createAppAsyncThunk<{ isLoggedIn: boolean }>('app/initializeApp', asy
         dispatch(appActions.setAppInitialized({isInitialized: true}));
     }
 })
-
+export type RequestStatusType = 'idle' | 'loading' | 'succeeded' | 'failed'
+export type InitialStateType = typeof initialState
+const initialState = {
+    status: 'idle' as RequestStatusType,
+    error: null as string | null,
+    isInitialized: false
+}
 const appSlice = createSlice({
     name: 'app',
     initialState,
@@ -48,6 +45,26 @@ const appSlice = createSlice({
         setAppError: (state, action: PayloadAction<{ error: string | null }>) => {
             state.error = action.payload.error
         }
+    },
+    extraReducers: builder => {
+        builder.addMatcher((action: AnyAction) => {
+                return action.type.endsWith('pending')
+            },
+            (state) => {
+                state.status = RequestStatus.LOADING
+            })
+        builder.addMatcher((action: AnyAction) => {
+                return action.type.endsWith('fulfilled')
+            },
+            (state) => {
+                state.status = RequestStatus.SUCCEEDED
+            })
+        builder.addMatcher((action: AnyAction) => {
+                return action.type.endsWith('rejected')
+            },
+            (state) => {
+                state.status = RequestStatus.FAILED
+            })
     }
 })
 export const appReducer = appSlice.reducer

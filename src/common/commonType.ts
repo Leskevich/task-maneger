@@ -9,6 +9,8 @@ export type ResponseType<D = {}> = {
     messages: Array<string>
     data: D
 }
+
+
 export const TResultCode = {
     OK: 0,
     FAIL: 1,
