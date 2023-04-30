@@ -59,10 +59,17 @@ const appSlice = createSlice({
       }
     );
     builder.addMatcher(
-      (action: AnyAction) => {
+      (action) => {
         return action.type.endsWith("rejected");
       },
-      (state) => {
+      (state, action: AnyAction) => {
+        const { payload } = action;
+        if (payload) {
+          if (payload.showGlobalError) {
+            console.log(action);
+          }
+        }
+
         state.status = RequestStatus.FAILED;
       }
     );
