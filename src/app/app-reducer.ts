@@ -62,14 +62,15 @@ const appSlice = createSlice({
       (action) => {
         return action.type.endsWith("rejected");
       },
-      (state, action: AnyAction) => {
-        const { payload } = action;
+      (state, action) => {
+        const { payload, error } = action;
         if (payload) {
           if (payload.showGlobalError) {
-            console.log(action);
+            state.error = payload.data.messages.length ? payload.data.messages[0] : "Some error occurred";
           }
+        } else {
+          state.error = error.message ? error.message : "Some error occurred";
         }
-
         state.status = RequestStatus.FAILED;
       }
     );
