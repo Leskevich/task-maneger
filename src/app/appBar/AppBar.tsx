@@ -3,7 +3,7 @@ import { AppBar, Button, IconButton, LinearProgress, Toolbar, Typography } from 
 import { Menu } from "@mui/icons-material";
 import { useAppSelector } from "../store";
 import { selectIsLoggedIn } from "../../features/Login";
-import { useActions } from "../../common/hooks";
+import { useActions } from "../../common";
 import { authThunk } from "../../features/Login/auth-reducer";
 import { selectStatus } from "../select";
 

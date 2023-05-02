@@ -3,7 +3,7 @@ import { FormikHelpers, useFormik } from "formik";
 import { useSelector } from "react-redux";
 import { AppRootStateType } from "app/store";
 import { Navigate } from "react-router-dom";
-import { useActions } from "common/hooks";
+import { useActions } from "common";
 import { Button, Checkbox, FormControl, FormControlLabel, FormGroup, FormLabel, Grid, TextField } from "@mui/material";
 import { authThunk } from "features/Login/auth-reducer";
 import { LoginParamsType } from "features/Login/authApi";

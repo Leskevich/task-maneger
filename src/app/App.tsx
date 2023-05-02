@@ -4,7 +4,7 @@ import { useAppSelector } from "./store";
 import { appThunk } from "./app-reducer";
 import { CircularProgress } from "@mui/material";
 import { selectIsInitialized } from "app";
-import { useActions } from "../common/hooks";
+import { useActions } from "../common";
 import { AppContainer } from "./container/Container";
 import { AppHeaderBar } from "./appBar/AppBar";
 

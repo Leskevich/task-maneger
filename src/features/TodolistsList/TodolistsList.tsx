@@ -4,7 +4,7 @@ import { thunkTodo } from "features/TodolistsList/todolist/todolists-reducer";
 import { Grid, Paper } from "@mui/material";
 import { Todolist } from "./todolist/Todolist";
 import { Navigate } from "react-router-dom";
-import { useActions } from "common/hooks";
+import { useActions } from "common";
 import { AddItemForm } from "common/components";
 import { selectIsLoggedIn } from "../Login";
 import { selectTodolists } from "./todolist/select";

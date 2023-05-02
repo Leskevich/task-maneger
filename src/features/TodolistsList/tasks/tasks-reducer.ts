@@ -1,7 +1,6 @@
 import { createSlice } from "@reduxjs/toolkit";
 import { thunkTodo } from "features/TodolistsList/todolist/todolists-reducer";
 import { createAppAsyncThunk } from "common/utils/create-app-async-thunk";
-
 import {
   taskAPI,
   TCreateTaskArgs,
